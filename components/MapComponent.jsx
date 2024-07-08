@@ -78,18 +78,18 @@ const MapComponent = () => {
   const [storesList, setStoresList] = useState([])
   const [markersList, setMarkersList] = useState([])
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState({});
+  const [location, setLocation] = useState({lat:'',lng:''});
    
   //  setLocation({ lat, lng });
   //  onLocationFetched({ lat, lng });
 
   useEffect(() => {
 
-    getCoordinatesFromPostCode('LE36QH')
+    getCoordinatesFromPostCode('le51ta')
       .then((response) => {
-        console.log("Data from google api as lat and lng  --->", response.result);
-      // setLocation({ lat, lng });
-      // console.log('Data from google api at component  --->',location.data.result);
+        // console.log("--->", response.data.results[0].geometry.location);
+      setLocation(response.data.results[0].geometry.location);
+      console.log('Data from google at location  --->',location);
       return location;
     })
 
