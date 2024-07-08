@@ -7,7 +7,7 @@ import EmptyState from "../../components/EmptyState"
 
 const Home = () => {
   return (
-    <SafeAreaView className="bg-primary">
+    <SafeAreaView className="bg-primary flex-1">
       <FlatList
         // data={[{ id: 1 }, { id: 2 }, { id: 3 }]}
         data={[]}

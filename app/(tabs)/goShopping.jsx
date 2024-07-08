@@ -8,7 +8,7 @@ import MapComponent from "../../components/MapComponent"
 
 const GoShopping = () => {
   return (
-    <SafeAreaView className="bg-primary">
+    <SafeAreaView className="bg-primary flex-1">
       <Text className="text-2xl font-psemibold text-white p-4">Find the cheapest prices in your area</Text>
       <SearchInput />
       <MapComponent />
