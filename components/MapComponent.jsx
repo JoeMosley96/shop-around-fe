@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps";
-import getStores from "../api"
+import {getStores} from "../api"
 
 const MapComponent = () => {
   // const rawData = [
@@ -73,16 +73,17 @@ const MapComponent = () => {
   // ];
 
   // let markers = []
+
   let mapRef = useRef(null);
   const [storesList, setStoresList] = useState([])
   const [markersList, setMarkersList] = useState([])
-  const [err, setErr] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     getStores()
-    .then(({stores})=>{
-      console.log(stores)
-      setErr(null)
+    .then((stores)=>{
+      console.log(stores, "is this null idk")
+      setError(null)
       setStoresList(stores)
       return storesList
     })
@@ -115,11 +116,13 @@ const MapComponent = () => {
       return markersList
     })
     .catch((err)=>{
-      setErr(err)
+      
+      setError(err)
+      console.error('An error occurred:', err);
+      console.error('Error details:', err.response ? err.response.data : err.message);
     })
 
   }, []);
-
 
 
 
