@@ -6,7 +6,7 @@ import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
 import MapComponent from "../../components/MapComponent";
 
-const GoShopping = () => {
+const ReportPrice = () => {
   return (
     <SafeAreaView className="bg-primary">
       <Text className="text-2xl font-psemibold text-white p-4">
@@ -18,4 +18,4 @@ const GoShopping = () => {
   );
 };
 
-export default GoShopping;
+export default ReportPrice;

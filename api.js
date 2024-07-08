@@ -6,9 +6,9 @@ const shopAround = axios.create({
 });
 
 export const getStores = () => {
-  console.log('getStores is being invoked now oh now');
+  console.log('getStores is being invoked now');
   return shopAround.get('stores')
-    .then(( data ) => {
+    .then(( {data} ) => {
       console.log('here is all the data');
       return data;
     })
@@ -19,12 +19,20 @@ export const getStores = () => {
     });
 };
 
+export const getProducts = () => {
+  console.log('getProducts is being invoked now');
+  return shopAround.get('stores')
+    .then(( {data} ) => {
+      console.log('here is all the data');
+      return data;
+    })
+    .catch((error) => {
+      console.error('An error occurred:', error);
+      console.error('Error details:', error.response ? error.response.data : error.message);
+      throw error;
+    });
+};
 
-// export const getUsers = () => {
-//   return shopAround.get("/users").then(({ data }) => {
-//     return data;
-//   });
-// };
 
 // export const getTopics = () => {
 //   return shopAround.get("/topics").then(({ data }) => {
