@@ -1,11 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps";
-<<<<<<< Updated upstream
 import {getCoordinatesFromPostCode, getStores} from "../api"
-=======
-import { getStores } from "../api";
->>>>>>> Stashed changes
 
 const MapComponent = () => {
   let mapRef = useRef(null);
@@ -28,37 +24,6 @@ const MapComponent = () => {
     })
 
     getStores()
-<<<<<<< Updated upstream
-    .then((stores)=>{
-      // console.log(stores, "is this null idk")
-      setError(null)
-      setStoresList(stores)
-      return storesList
-    })
-    .then((storesList)=>{
-      const markers = storesList.map((shop) => ({
-        locationName: shop.store_name,
-        lat: Number(shop.lat),
-        lng: Number(shop.lon),
-        monday: shop.monday,
-        tuesday: shop.tuesday,
-        wednesday: shop.wednesday,
-        thursday: shop.thursday,
-        friday: shop.friday,
-        saturday: shop.saturday,
-        sunday: shop.sunday,
-      }));
-      if (mapRef.current) {
-        mapRef.current.fitToCoordinates(
-          markers.map((marker) => ({
-            latitude: marker.lat,
-            longitude: marker.lng,
-          })),
-          {
-            edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-            animated: true,
-          }
-=======
       .then((stores) => {
         setError(null);
         setStoresList(stores);
@@ -98,7 +63,6 @@ const MapComponent = () => {
         console.error(
           "Error details:",
           err.response ? err.response.data : err.message
->>>>>>> Stashed changes
         );
       });
   }, []);

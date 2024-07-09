@@ -6,17 +6,9 @@ const shopAround = axios.create({
 });
 
 export const getStores = () => {
-<<<<<<< Updated upstream
-  // console.log('getStores is being invoked now');
-  return shopAround
-    .get("stores")
-    .then(({ data }) => {
-      // console.log('here is all the data');
-=======
   console.log('getStores is being invoked');
   return shopAround.get('stores')
     .then(( {data} ) => {
->>>>>>> Stashed changes
       return data;
     })
     .catch((error) => {
@@ -30,18 +22,10 @@ export const getStores = () => {
 };
 
 export const getProducts = () => {
-<<<<<<< Updated upstream
-  console.log("getProducts is being invoked now");
-  return shopAround
-    .get("stores")
-    .then(({ data }) => {
-      //console.log('here is all the data');
-=======
   console.log('getProducts is being invoked now');
   return shopAround.get('products')
     .then(( {data} ) => {
       console.log(data, 'here is all the data');
->>>>>>> Stashed changes
       return data;
     })
     .catch((error) => {
@@ -56,6 +40,7 @@ export const getProducts = () => {
 
 export const getCoordinatesFromPostCode = async (postcode) => {
   const API_KEY = "AIzaSyDug2H25Ibza9XgkDvk3zLtEWwbxK0LCxA";
+  console.log('postcode',postcode);
 
   return (response = await axios
     .get(`https://maps.googleapis.com/maps/api/geocode/json`, {
