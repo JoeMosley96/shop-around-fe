@@ -23,7 +23,7 @@ function ProductCard({
         <View className="justify-center items-center flex-row flex-1">
           <View className="w-[46px] h-[46px] rounded-lg border border secondary justify-center items-center p-0.5">
             <Image
-              source={product.product_photo_url}
+              source={{uri:product.product_photo_url}}
               className="w-full h-full rounded-lg"
               resizeMode="cover"
             />

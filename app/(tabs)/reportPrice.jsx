@@ -15,20 +15,22 @@ const ReportPrice = () => {
 
   return (
     <SafeAreaView className="bg-primary">
+      
       <Text className="text-2xl font-psemibold text-white p-4">
         Report the price of an item
       </Text>
+
       {chosenProduct.product_id?
       null:
       <SearchBox setChosenProduct={setChosenProduct}/>}
       
-
       {chosenProduct.product_id?
       <>
       <Text className="text-l font-psemibold text-white p-4">Reporting the price of</Text>
       <ProductDisplay chosenProduct={chosenProduct} setChosenProduct={setChosenProduct}/>
       </>
       :null}
+
       <MapComponent />
     </SafeAreaView>
   );

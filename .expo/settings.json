@@ -4,11 +4,7 @@
   "minify": false,
   "https": false,
   "scheme": null,
-<<<<<<< Updated upstream
   "hostType": "lan",
-=======
-  "hostType": "tunnel",
->>>>>>> Stashed changes
   "lanType": "ip",
   "devClient": false
 }

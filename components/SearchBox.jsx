@@ -66,7 +66,7 @@ const SearchBox = ({ setChosenProduct }) => {
       </View>
       <FlatList
         data={searchTerm.length ? filteredResults : []}
-        keyExtractor={(item) => item.$product_id}
+        keyExtractor={(item) => item.product_id}
         renderItem={({ item }) => (
           <ProductCard product={item} setChosenProduct={setChosenProduct} setSearchTerm={setSearchTerm}/>
         )}
