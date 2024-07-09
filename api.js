@@ -5,10 +5,12 @@ const shopAround = axios.create({
   // withCredentials: true,  // Include credentials if needed
 });
 
-export const getStores = () => {
+export const getStores = (lat,lng,rad) => {
   console.log('getStores is being invoked');
-  return shopAround.get('stores')
+  const params = {params: {rad}}
+  return shopAround.get(`stores/${lat}/${lng}`, params)
     .then(( {data} ) => {
+      console.log(data)
       return data;
     })
     .catch((error) => {
@@ -22,10 +24,10 @@ export const getStores = () => {
 };
 
 export const getProducts = () => {
-  console.log('getProducts is being invoked now');
-  return shopAround.get('products')
+  // console.log('getProducts is being invoked now');
+  return shopAround.get(`products`)
     .then(( {data} ) => {
-      console.log(data, 'here is all the data');
+      // console.log(data, 'here is all the data');
       return data;
     })
     .catch((error) => {

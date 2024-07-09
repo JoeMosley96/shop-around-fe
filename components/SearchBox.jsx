@@ -28,7 +28,7 @@ const SearchBox = ({ setChosenProduct }) => {
     });
   }, []);
 
-  console.log(productList, "<--this is productList");
+  // console.log(productList, "<--this is productList");
 
   const filteredResults = productList.filter(
     (product) =>
@@ -38,7 +38,7 @@ const SearchBox = ({ setChosenProduct }) => {
       product.size.toUpperCase().includes(searchTerm.toUpperCase())
   );
 
-  console.log(filteredResults, "<--this is filteredResults");
+  // console.log(filteredResults, "<--this is filteredResults");
 
   return (
     <>
