@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps";
-import {getStores} from "../api"
+import {getCoordinatesFromPostCode, getStores} from "../api"
 
 const MapComponent = () => {
   // const rawData = [
@@ -78,11 +78,24 @@ const MapComponent = () => {
   const [storesList, setStoresList] = useState([])
   const [markersList, setMarkersList] = useState([])
   const [error, setError] = useState(null);
+  const [location, setLocation] = useState({lat:'',lng:''});
+   
+  //  setLocation({ lat, lng });
+  //  onLocationFetched({ lat, lng });
 
   useEffect(() => {
+
+    getCoordinatesFromPostCode('le51ta')
+      .then((response) => {
+        // console.log("--->", response.data.results[0].geometry.location);
+      setLocation(response.data.results[0].geometry.location);
+      console.log('Data from google at location  --->',location);
+      return location;
+    })
+
     getStores()
     .then((stores)=>{
-      console.log(stores, "is this null idk")
+      // console.log(stores, "is this null idk")
       setError(null)
       setStoresList(stores)
       return storesList
