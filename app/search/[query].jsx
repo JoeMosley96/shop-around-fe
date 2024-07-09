@@ -12,7 +12,7 @@ import ProductCard from "../../components/ProductCard";
 
 const Search = () => {
   const { query } = useLocalSearchParams();
-  console.log(query);
+  // console.log(query);
   const [productList, setProductList] = useState([]);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Search = () => {
     product.description.toUpperCase().includes(query.toUpperCase())
   );
 
-  console.log(productList, "<---productList");
+  // console.log(productList, "<---productList");
 
   return (
     <SafeAreaView className="bg-primary flex-1">

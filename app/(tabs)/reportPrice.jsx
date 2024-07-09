@@ -10,7 +10,7 @@ import {getProducts} from "../../api"
 
 const ReportPrice = () => {
   const [chosenProduct, setChosenProduct] = useState({});
-  console.log(chosenProduct, "<--this is chosenProduct")
+  // console.log(chosenProduct, "<--this is chosenProduct")
 
 
   return (

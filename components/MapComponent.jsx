@@ -2,63 +2,91 @@ import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps";
 import { getCoordinatesFromPostCode, getStores } from "../api";
+import * as Location from "expo-location";
 
-const MapComponent = () => {
+const MapComponent = ({ postcode }) => {
   let mapRef = useRef(null);
   const [storesList, setStoresList] = useState([]);
   const [markersList, setMarkersList] = useState([]);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState({ lat: '', lng: '' });
+  const [location, setLocation] = useState({ lat: "", lng: "" });
 
   useEffect(() => {
-    getStores()
-      .then((stores) => {
-        setError(null);
-        setStoresList(stores);
+    
+    //Gps from device
 
-        const markers = stores.map((shop) => ({
-          locationName: shop.store_name,
-          lat: Number(shop.lat),
-          lng: Number(shop.lon),
-          monday: shop.monday,
-          tuesday: shop.tuesday,
-          wednesday: shop.wednesday,
-          thursday: shop.thursday,
-          friday: shop.friday,
-          saturday: shop.saturday,
-          sunday: shop.sunday,
-        }));
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
 
-        if (mapRef.current) {
-          mapRef.current.fitToCoordinates(
-            markers.map((marker) => ({
-              latitude: marker.lat,
-              longitude: marker.lng,
-            })),
-            {
-              edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-              animated: true,
-            }
+      let location = await Location.getCurrentPositionAsync({});
+
+      setLocation(location);
+
+      console.log("device GPS location--->", location);
+    })();
+
+    ///
+
+    getCoordinatesFromPostCode(postcode).then((response) => {
+      const location = response.data.results[0].geometry.location;
+      setLocation(location);
+      console.log("Data from google at location    --->", location);
+      return location;
+    });
+  }, [postcode]);
+
+  useEffect(() => {
+    // console.log(typeof location.lat === "number");
+    if (typeof location.lat === "number") {
+      getStores(location.lat, location.lng, 2000)
+        .then((stores) => {
+          // console.log(stores, "<--stores");
+          setError(null);
+          setStoresList(stores);
+          return stores;
+        })
+        .then((stores) => {
+          const markers = stores.map((shop) => ({
+            locationName: shop.store_name,
+            lat: Number(shop.lat),
+            lng: Number(shop.lon),
+            monday: shop.monday,
+            tuesday: shop.tuesday,
+            wednesday: shop.wednesday,
+            thursday: shop.thursday,
+            friday: shop.friday,
+            saturday: shop.saturday,
+            sunday: shop.sunday,
+          }));
+          if (mapRef.current) {
+            mapRef.current.fitToCoordinates(
+              markers.map((marker) => ({
+                latitude: marker.lat,
+                longitude: marker.lng,
+              })),
+              {
+                edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+                animated: true,
+              }
+            );
+          }
+          setMarkersList(markers);
+          return markersList;
+        })
+        .catch((err) => {
+          setError(err);
+          console.error("An error occurred:", err);
+          console.error(
+            "Error details:",
+            err.response ? err.response.data : err.message
           );
-        }
-        setMarkersList(markers);
-
-        return getCoordinatesFromPostCode('le51ta');
-      })
-      .then((response) => {
-        const fetchedLocation = response.data.results[0].geometry.location;
-        setLocation(fetchedLocation);
-        console.log('Data from google at location --->', fetchedLocation);
-      })
-      .catch((err) => {
-        setError(err);
-        console.error("An error occurred:", err);
-        console.error(
-          "Error details:",
-          err.response ? err.response.data : err.message
-        );
-      });
-  }, []);
+        });
+    }
+  }, [location]);
 
   return (
     <View style={styles.container}>
@@ -67,8 +95,8 @@ const MapComponent = () => {
         style={styles.map}
         ref={mapRef}
         initialRegion={{
-          latitude: location.lat,
-          longitude: location.lng,
+          latitude: 53.7908895,
+          longitude: -1.555376,
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         }}

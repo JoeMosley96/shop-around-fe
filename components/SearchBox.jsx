@@ -22,13 +22,13 @@ const SearchBox = ({ setChosenProduct }) => {
 
   useEffect(() => {
     getProducts().then((data) => {
-      console.log(data, "<-- data within useEffect");
+      // console.log(data, "<-- data within useEffect");
       setProductList(data);
       return data;
     });
   }, []);
 
-  console.log(productList, "<--this is productList");
+  // console.log(productList, "<--this is productList");
 
   const filteredResults = productList.filter(
     (product) =>
@@ -38,7 +38,7 @@ const SearchBox = ({ setChosenProduct }) => {
       product.size.toUpperCase().includes(searchTerm.toUpperCase())
   );
 
-  console.log(filteredResults, "<--this is filteredResults");
+  // console.log(filteredResults, "<--this is filteredResults");
 
   return (
     <>
