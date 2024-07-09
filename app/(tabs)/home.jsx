@@ -2,8 +2,8 @@ import { View, Text, FlatList, Image } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "../../constants/images";
-import SearchInput from "../../components/SearchInput";
-import EmptyState from "../../components/EmptyState"
+import SearchBox from "../../components/SearchBox";
+import EmptyState from "../../components/EmptyState";
 
 const Home = () => {
   return (
@@ -39,7 +39,12 @@ const Home = () => {
             </View>
           </View>
         )}
-        ListEmptyComponent={()=>(<EmptyState title="No Favourites Yet" subtitle="Your favourite items will show up here"/>)}
+        ListEmptyComponent={() => (
+          <EmptyState
+            title="No Favourites Yet"
+            subtitle="Your favourite items will show up here"
+          />
+        )}
       />
     </SafeAreaView>
   );

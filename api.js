@@ -6,11 +6,17 @@ const shopAround = axios.create({
 });
 
 export const getStores = () => {
+<<<<<<< Updated upstream
   // console.log('getStores is being invoked now');
   return shopAround
     .get("stores")
     .then(({ data }) => {
       // console.log('here is all the data');
+=======
+  console.log('getStores is being invoked');
+  return shopAround.get('stores')
+    .then(( {data} ) => {
+>>>>>>> Stashed changes
       return data;
     })
     .catch((error) => {
@@ -24,11 +30,18 @@ export const getStores = () => {
 };
 
 export const getProducts = () => {
+<<<<<<< Updated upstream
   console.log("getProducts is being invoked now");
   return shopAround
     .get("stores")
     .then(({ data }) => {
       //console.log('here is all the data');
+=======
+  console.log('getProducts is being invoked now');
+  return shopAround.get('products')
+    .then(( {data} ) => {
+      console.log(data, 'here is all the data');
+>>>>>>> Stashed changes
       return data;
     })
     .catch((error) => {

@@ -21,6 +21,8 @@ import menuBurger from "../assets/extraIcons/menuBurger.png"
 // import search from "../assets/extraIcons/search.png"
 import shoppingCart from "../assets/extraIcons/shoppingCart.png"
 import user from "../assets/extraIcons/user.png"
+import star from "../assets/extraIcons/star.png"
+import pencil from "../assets/extraIcons/pencil.png"
 
 export default {
   play,
@@ -44,5 +46,7 @@ export default {
   marker,
   menuBurger,
   shoppingCart,
-  user
+  user,
+  star,
+  pencil
 };
