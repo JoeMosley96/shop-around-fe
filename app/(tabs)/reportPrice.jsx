@@ -26,7 +26,6 @@ const ReportPrice = () => {
   const [postcode, setPostcode] = useState("");
   const [priceInput, setPriceInput] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
   console.log(chosenProduct, "<--this is chosenProduct");
   console.log(priceInput, "<--this is priceInput");
   console.log(postcode, "<-- this is postcode");
@@ -36,6 +35,7 @@ const ReportPrice = () => {
   console.log(
     chosenStore !== 0 && postcode.length && priceInput !== 0,
     "<--ternery logic"
+
   );
 
   const regex =

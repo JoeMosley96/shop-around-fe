@@ -5,10 +5,13 @@ const shopAround = axios.create({
   // withCredentials: true,  // Include credentials if needed
 });
 
+
+
 export const getStores = (lat,lng,rad) => {
   console.log('getStores is being invoked');
   const params = {params: {rad}}
   return shopAround.get(`stores/${lat}/${lng}`, params)
+
     .then(( {data} ) => {
       console.log(data)
       return data;
@@ -42,7 +45,10 @@ export const getStoresById = (id) => {
 
 export const getProducts = () => {
   // console.log('getProducts is being invoked now');
+
+
   return shopAround.get(`products`)
+
     .then(( {data} ) => {
       // console.log(data, 'here is all the data');
       return data;
@@ -59,7 +65,7 @@ export const getProducts = () => {
 
 export const getCoordinatesFromPostCode = async (postcode) => {
   const API_KEY = "AIzaSyDug2H25Ibza9XgkDvk3zLtEWwbxK0LCxA";
-  console.log('postcode',postcode);
+  console.log('postcode ',postcode);
 
   return (response = await axios
     .get(`https://maps.googleapis.com/maps/api/geocode/json`, {
@@ -77,6 +83,43 @@ export const getCoordinatesFromPostCode = async (postcode) => {
       throw error;
     }));
 };
+
+
+export const getUsers = (user_id) => {
+  console.log('GETUSERS is being invoked ');
+  return shopAround
+    .get(`users/${user_id}`)
+    .then(({ data }) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("An error occurred:", error);
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    });
+};
+
+
+export const updateUser = async(updatedUserFields,user_id) => {
+  console.log("Updated User is being invoked ", updatedUserFields);
+  return await shopAround
+    .patch(`users/${user_id}/`, updatedUserFields)
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("An error occurred:", error);
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    });
+};
+
 
 export const postPrice =(body)=>{
   return shopAround.post("prices/", body)
@@ -107,6 +150,7 @@ export const getLocalPrices =(product_id, lat, lng, rad)=>{
     throw error;
   });
 }
+
 
 // export const getTopics = () => {
 //   return shopAround.get("/topics").then(({ data }) => {

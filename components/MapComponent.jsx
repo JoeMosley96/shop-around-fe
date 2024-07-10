@@ -2,16 +2,43 @@ import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps";
 import { getCoordinatesFromPostCode, getStores } from "../api";
+
+import * as Location from "expo-location";
+
+
+
 import CustomButton from "../components/CustomButton";
 import icons from "../constants/icons"
 
 const MapComponent = ({ postcode, setChosenStore, chosenStore, setChosenStoreName }) => {
+
   let mapRef = useRef(null);
   const [storesList, setStoresList] = useState([]);
   const [markersList, setMarkersList] = useState([]);
   const [error, setError] = useState(null);
   const [location, setLocation] = useState({ lat: "", lng: "" });
   const [displayedMarker, setDisplayedMarker] = useState(null);
+
+    //Gps from device
+
+//     (async () => {
+//       let { status } = await Location.requestForegroundPermissionsAsync();
+//       if (status !== "granted") {
+//         setErrorMsg("Permission to access location was denied");
+//         return;
+//       }
+
+//       let location = await Location.getCurrentPositionAsync({});
+
+//       setLocation(location);
+
+//       console.log("device GPS location--->", location);
+//     })();
+
+    ///
+
+ 
+
 
   useEffect(() => {
     const regex =
@@ -83,6 +110,7 @@ const MapComponent = ({ postcode, setChosenStore, chosenStore, setChosenStoreNam
 
   console.log(chosenStore, "<--chosenStore");
   console.log(displayedMarker, "<--displayedMarker");
+
 
   return (
     <View style={styles.container}>

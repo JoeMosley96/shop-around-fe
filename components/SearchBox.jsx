@@ -39,7 +39,9 @@ const SearchBox = ({ setChosenProduct }) => {
   );
 
   // console.log(filteredResults, "<--this is filteredResults");
+
   const searchData = searchTerm.length ? filteredResults : [];
+
 
   return (
     <>
