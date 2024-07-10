@@ -5,10 +5,32 @@ const shopAround = axios.create({
   // withCredentials: true,  // Include credentials if needed
 });
 
-export const getStores = () => {
-  // console.log('getStores is being invoked ');
-  return shopAround.get('stores')
+
+
+export const getStores = (lat,lng,rad) => {
+  console.log('getStores is being invoked');
+  const params = {params: {rad}}
+  return shopAround.get(`stores/${lat}/${lng}`, params)
+
     .then(( {data} ) => {
+      console.log(data)
+      return data;
+    })
+    .catch((error) => {
+      console.error("An error occurred:", error);
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    });
+};
+
+export const getStoresById = (id) => {
+  console.log('getStoresById is being invoked');
+  return shopAround.get(`stores/${id}`)
+    .then(( {data} ) => {
+      console.log(data)
       return data;
     })
     .catch((error) => {
@@ -23,7 +45,10 @@ export const getStores = () => {
 
 export const getProducts = () => {
   // console.log('getProducts is being invoked now');
-  return shopAround.get('products')
+
+
+  return shopAround.get(`products`)
+
     .then(( {data} ) => {
       // console.log(data, 'here is all the data');
       return data;
@@ -59,6 +84,7 @@ export const getCoordinatesFromPostCode = async (postcode) => {
     }));
 };
 
+
 export const getUsers = (user_id) => {
   console.log('GETUSERS is being invoked ');
   return shopAround
@@ -93,6 +119,37 @@ export const updateUser = async(updatedUserFields,user_id) => {
       throw error;
     });
 };
+
+
+export const postPrice =(body)=>{
+  return shopAround.post("prices/", body)
+  .then(({data})=>{
+    return data
+  })
+  .catch((error) => {
+    console.error("An error occurred:", error);
+    console.error(
+      "Error details:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  });
+}
+
+export const getLocalPrices =(product_id, lat, lng, rad)=>{
+  return shopAround.get(`price-report/${product_id}/${lat}/${lng}/${rad}`)
+  .then(({data})=>{
+    return data
+  })
+  .catch((error) => {
+    console.error("An error occurred:", error);
+    console.error(
+      "Error details:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  });
+}
 
 
 // export const getTopics = () => {

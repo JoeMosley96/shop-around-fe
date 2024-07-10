@@ -1,79 +1,38 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps";
-import { getCoordinatesFromPostCode, getStores } from "../api";
-
-import * as Location from "expo-location";
-
-
-
+import { getCoordinatesFromPostCode, getStores, getLocalPrices} from "../api";
 import CustomButton from "../components/CustomButton";
 import icons from "../constants/icons"
 
-const MapComponent = ({ postcode, setChosenStore, chosenStore, setChosenStoreName }) => {
-
+const MapComponent = ({location, chosenProduct, sliderValue}) => {
   let mapRef = useRef(null);
-  const [storesList, setStoresList] = useState([]);
+  const [pricesList, setPricesList] = useState([]);
   const [markersList, setMarkersList] = useState([]);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState({ lat: "", lng: "" });
   const [displayedMarker, setDisplayedMarker] = useState(null);
 
-    //Gps from device
-
-//     (async () => {
-//       let { status } = await Location.requestForegroundPermissionsAsync();
-//       if (status !== "granted") {
-//         setErrorMsg("Permission to access location was denied");
-//         return;
-//       }
-
-//       let location = await Location.getCurrentPositionAsync({});
-
-//       setLocation(location);
-
-//       console.log("device GPS location--->", location);
-//     })();
-
-    ///
-
- 
-
-
-  useEffect(() => {
-    const regex =
-    /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/;
-    if(regex.test(postcode)){
-      getCoordinatesFromPostCode(postcode).then((response) => {
-        const location = response.data.results[0].geometry.location;
-        setLocation(location);
-        console.log("Data from google at location    --->", location);
-        return location;
-      });
-    }
-  }, [postcode]);
-
-  // const handleCalloutPress = (marker) => {
-  //   setChosenStore(marker.store_id);
-  //   setDisplayedMarker(null);
-  // };
 
   useEffect(() => {
     console.log(typeof location.lat === "number");
     if (typeof location.lat === "number") {
-      getStores(location.lat, location.lng, 500)
-        .then((stores) => {
-          console.log(stores, "<--stores");
+      getLocalPrices(
+        chosenProduct.product_id,
+        location.lat,
+        location.lng,
+        sliderValue)
+        .then((prices) => {
+          console.log(prices, "<--prices from API");
           setError(null);
-          setStoresList(stores);
-          return stores;
+          setPricesList(prices);
+          return prices;
         })
-        .then((stores) => {
-          const markers = stores.map((shop) => ({
+        .then((prices) => {
+          const markers = prices.map((shop, index) => ({
             store_id: shop.store_id,
             locationName: shop.store_name,
-            lat: Number(shop.lat),
-            lng: Number(shop.lon),
+            lat: Number(shop.latitude),
+            lng: Number(shop.longitude),
             monday: shop.monday,
             tuesday: shop.tuesday,
             wednesday: shop.wednesday,
@@ -81,6 +40,8 @@ const MapComponent = ({ postcode, setChosenStore, chosenStore, setChosenStoreNam
             friday: shop.friday,
             saturday: shop.saturday,
             sunday: shop.sunday,
+            price: shop.price,
+            distanceFromCentre: chosenProduct.distance
           }));
           if (mapRef.current) {
             mapRef.current.fitToCoordinates(
@@ -108,9 +69,10 @@ const MapComponent = ({ postcode, setChosenStore, chosenStore, setChosenStoreNam
     }
   }, [location]);
 
-  console.log(chosenStore, "<--chosenStore");
-  console.log(displayedMarker, "<--displayedMarker");
 
+  console.log(displayedMarker, "<--displayedMarker");
+  console.log(location)
+  console.log(markersList, "<--markersList")
 
   return (
     <View style={styles.container}>
@@ -130,23 +92,22 @@ const MapComponent = ({ postcode, setChosenStore, chosenStore, setChosenStoreNam
             key={marker.store_id}
             coordinate={{ latitude: marker.lat, longitude: marker.lng }}
             // title={marker.locationName}
-           
             onPress={() => {
               setDisplayedMarker(marker.store_id);
             }}
+            image={index===0?icons.greenmarker:undefined}
           >
-            {/* <Image source={icons.greenmarker}/> */}
             {/* {marker.store_id == displayedMarker ?  */}
               <Callout
                 value={marker.store_id}
                 onPress={() => {
-                  setChosenStore(marker.store_id);
-                  setChosenStoreName(marker.locationName)
                   setDisplayedMarker(null);
                 }}
+                style={{ flex: 1, position: 'relative' }}
               >
-                <View>
+                <View  >
                   <Text style={styles.calloutTitle}>{marker.locationName}</Text>
+                  <Text>£{marker.price}</Text>
                   <Text>{marker.monday}</Text>
                   <Text>{marker.tuesday}</Text>
                   <Text>{marker.wednesday}</Text>
@@ -154,14 +115,6 @@ const MapComponent = ({ postcode, setChosenStore, chosenStore, setChosenStoreNam
                   <Text>{marker.friday}</Text>
                   <Text>{marker.saturday}</Text>
                   <Text>{marker.sunday} </Text>
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    className={`bg-secondary rounded-xl min-h-[62px] justify-center items-center }`}
-                  >
-                    <Text className={`text-primary font-psemibold text-lg`}>
-                      {marker.store_id === chosenStore ? "Selected" : "Select"}
-                    </Text>
-                  </TouchableOpacity>
                 </View>
               </Callout>
               {/* : null}  */}
@@ -186,6 +139,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  calloutContainer:{
+    height:300,
+    width: 100000,
+    justifyContent: "flex-start",
+    alignItems: "left",
+  }
 });
 
 export default MapComponent;

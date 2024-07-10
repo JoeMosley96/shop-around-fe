@@ -23,6 +23,11 @@ import shoppingCart from "../assets/extraIcons/shoppingCart.png"
 import user from "../assets/extraIcons/user.png"
 import star from "../assets/extraIcons/star.png"
 import pencil from "../assets/extraIcons/pencil.png"
+import greenmarker from "../assets/extraIcons/greenmarker.png"
+import greenmarkerresized from "../assets/extraIcons/greenmarkerresized.png"
+
+
+
 
 export default {
   play,
@@ -48,5 +53,7 @@ export default {
   shoppingCart,
   user,
   star,
-  pencil
+  pencil,
+  greenmarker,
+  greenmarkerresized
 };
