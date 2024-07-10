@@ -79,8 +79,22 @@ export const getCoordinatesFromPostCode = async (postcode) => {
 };
 
 export const postPrice =(body)=>{
-
   return shopAround.post("prices/", body)
+  .then(({data})=>{
+    return data
+  })
+  .catch((error) => {
+    console.error("An error occurred:", error);
+    console.error(
+      "Error details:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  });
+}
+
+export const getLocalPrices =(product_id, lat, lng, rad)=>{
+  return shopAround.get(`price-report/${product_id}/${lat}/${lng}/${rad}`)
   .then(({data})=>{
     return data
   })

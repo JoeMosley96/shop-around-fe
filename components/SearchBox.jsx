@@ -47,7 +47,7 @@ const SearchBox = ({ setChosenProduct }) => {
         <TextInput
           className="text-white mt-0.5 text-white flex-1 font-pregular"
           value={searchTerm}
-          placeholder="Search for items"
+          placeholder="Type item name here"
           placeholderTextColor="#CDCDE0"
           onChangeText={(e) => setSearchTerm(e)}
         />

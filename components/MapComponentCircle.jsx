@@ -15,11 +15,12 @@ const MapComponentCircle = ({
   chosenStore,
   setChosenStoreName,
   sliderValue,
+  location,
+  setLocation
 }) => {
   let mapRef = useRef(null);
   const [storesList, setStoresList] = useState([]);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState({"lat": "", "lng": ""});
   const [displayedMarker, setDisplayedMarker] = useState(null);
 
   useEffect(() => {
@@ -35,61 +36,14 @@ const MapComponentCircle = ({
     }
   }, [postcode]);
 
-  // const handleCalloutPress = (marker) => {
-  //   setChosenStore(marker.store_id);
-  //   setDisplayedMarker(null);
-  // };
 
-  // useEffect(() => {
-  //   console.log(typeof location.lat === "number");
-  //   if (typeof location.lat === "number") {
-  //     getStores(location.lat, location.lng, 500)
-  //       .then((stores) => {
-  //         console.log(stores, "<--stores");
-  //         setError(null);
-  //         return stores;
-  //       })
-  //       .then((stores) => {
-  //         if (mapRef.current) {
-  //           mapRef.current.fitToCoordinates(
-  //             markers.map((marker) => ({
-  //               latitude: marker.lat,
-  //               longitude: marker.lng,
-  //             })),
-  //             {
-  //               edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-  //               animated: true,
-  //             }
-  //           );
-  //         }
-  //         setMarkersList(markers);
-  //         return markersList;
-  //       })
-  //       .catch((err) => {
-  //         setError(err);
-  //         console.error("An error occurred:", err);
-  //         console.error(
-  //           "Error details:",
-  //           err.response ? err.response.data : err.message
-  //         );
-  //       });
-  //   }
-  // }, [location]);
 
   console.log(chosenStore, "<--chosenStore");
   console.log(displayedMarker, "<--displayedMarker");
   console.log(typeof location.lat, "<--this is the type of location.lat")
 
 
-          // if (mapRef.current) {
-          //   mapRef.current.fitToCoordinates(
-          //     { latitude: location.lat, longitude: location.lng },
-          //     {
-          //       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-          //       animated: true,
-          //     }
-          //   );
-          // }
+
 
   return (
     <View style={styles.container}>
