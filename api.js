@@ -59,6 +59,42 @@ export const getCoordinatesFromPostCode = async (postcode) => {
     }));
 };
 
+export const getUsers = (user_id) => {
+  console.log('GETUSERS is being invoked ');
+  return shopAround
+    .get(`users/${user_id}`)
+    .then(({ data }) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("An error occurred:", error);
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    });
+};
+
+
+export const updateUser = async(updatedUserFields,user_id) => {
+  console.log("Updated User is being invoked ", updatedUserFields);
+  return await shopAround
+    .patch(`users/${user_id}/`, updatedUserFields)
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("An error occurred:", error);
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    });
+};
+
+
 // export const getTopics = () => {
 //   return shopAround.get("/topics").then(({ data }) => {
 //     return data;

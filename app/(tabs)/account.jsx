@@ -1,10 +1,8 @@
-import {StyleSheet, Text,ScrollView, View, Button} from "react-native"
+import {StyleSheet, Text,ScrollView, View, TextInput, Button} from "react-native"
 import React, { useEffect, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "../../constants";
-import FormField from "../../components/FormField";
-import CustomButton from "../../components/CustomButton";
 import { Link, router } from "expo-router";
+import { getUsers } from "../../api";
 
 
 
@@ -12,34 +10,67 @@ const Account = () => {
     
     const [user, setUser] = useState({});
     const [editing, setEditing] = useState(null);
+  const [tempValue, setTempValue] = useState("");
+  const [user_id, setUser_id] = useState(0);
 
     useEffect(() => {
-      
-      const fetchUserData = async () => {
-        try {
-          const response = await axios.get(
-            "http://your-backend-api-url/users/1"
-          ); 
-          setUser(response.data);
+      try {
+          setUser_id(2)
+          getUsers(2).then((response) => {
+            setUser(response);
+            return user
+          })
         } catch (error) {
           console.error(error);
         }
-      };
-
-      fetchUserData();
     }, []);
+  
+  const handleChange = async (field, value) => {
+      
+    const updatedUserFields = { ...user, [field]: value };
+
+    console.log(updatedUserFields);
+    
+    updateUser(updatedUserFields,user_id).then((response) => {
+      console.log("updated user response---->", response);
+    });
+  }
+
+  const handleButtonPress = (field) => {
+    if (editing === field) {
+      handleChange(field, tempValue);
+    } else {
+      setTempValue(user[field]);
+      setEditing(field);
+    }
+  };
+      
+        // await axios.put(
+        //   `http://your-backend-api-url/users/${user.id}`,
+        //   updatedUser
+        // );
+        // setUser(updatedUser);
+        // setEditing(null);
+      
+  
+  
     return (
       <SafeAreaView className="bg-primary h-full">
         <ScrollView>
           <View style={styles.container}>
-            <Text style={styles.title}>Profile</Text>
-            {["firstName", "lastName", "email", "password"].map((field) => (
+            <Text className="text-3xl text-white text-semibold mt-10 font-psemibold">
+              Profile
+            </Text>
+
+            {["username", "email"].map((field) => (
               <View key={field} style={styles.fieldContainer}>
-                <Text className="text-2xl text-white text-semibold mt-10 font-psemibold">
+                <Text className="text-xl text-white text-semibold mt-10 font-psemibold">
                   {field.charAt(0).toUpperCase() + field.slice(1)}:
                 </Text>
+
                 {editing === field ? (
                   <TextInput
+                    className="text-l text-white text-semibold mt-10 font-psemibold"
                     style={styles.input}
                     value={user[field]}
                     onChangeText={(value) =>
@@ -47,25 +78,15 @@ const Account = () => {
                     }
                   />
                 ) : (
-                  <Text className="text-2xl text-white text-semibold mt-3 font-psemibold">
+                  <Text className="text-l text-white text-semibold mt-3 font-psemibold">
                     {user[field]}
                   </Text>
                 )}
 
-                <Link
-                  className="text-log font-psemibold text-secondary"
-                  href="/sign-up"
-                  onPress={() => {
-                    if (editing === field) {
-                      handleChange(field, user[field]);
-                    } else {
-                      setEditing(field);
-                    }
-                  }}
-                >
-                  {" "}
-                  {editing === field ? "Save" : "Change"}
-                </Link>
+                <Button
+                  title={editing === field ? "Save" : "Change"}
+                  onPress={() => handleButtonPress(field)}
+                />
               </View>
             ))}
           </View>
