@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
-import {StatusBar} from "expo-status-bar"
-import { Stack, Layout} from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { Stack, Layout } from "expo-router";
 
 const AuthLayout = () => {
   return (
@@ -19,10 +19,8 @@ const AuthLayout = () => {
             headerShown: false,
           }}
         />
-
-        
       </Stack>
-      <StatusBar backgroundColor = "#161622" style="light"/>
+      <StatusBar backgroundColor="#161622" style="light" />
     </>
   );
 };

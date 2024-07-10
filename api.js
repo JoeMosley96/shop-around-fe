@@ -23,6 +23,23 @@ export const getStores = (lat,lng,rad) => {
     });
 };
 
+export const getStoresById = (id) => {
+  console.log('getStoresById is being invoked');
+  return shopAround.get(`stores/${id}`)
+    .then(( {data} ) => {
+      console.log(data)
+      return data;
+    })
+    .catch((error) => {
+      console.error("An error occurred:", error);
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    });
+};
+
 export const getProducts = () => {
   // console.log('getProducts is being invoked now');
   return shopAround.get(`products`)
@@ -60,6 +77,22 @@ export const getCoordinatesFromPostCode = async (postcode) => {
       throw error;
     }));
 };
+
+export const postPrice =(body)=>{
+
+  return shopAround.post("prices/", body)
+  .then(({data})=>{
+    return data
+  })
+  .catch((error) => {
+    console.error("An error occurred:", error);
+    console.error(
+      "Error details:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  });
+}
 
 // export const getTopics = () => {
 //   return shopAround.get("/topics").then(({ data }) => {

@@ -13,7 +13,7 @@ import { router, usePathname } from "expo-router";
 import { icons } from "../constants";
 import { getProducts } from "../api";
 import ProductCard from "../components/ProductCard";
-import ProductDisplay from "./ProductDisplay"
+import ProductDisplay from "./ProductDisplay";
 
 const SearchBox = ({ setChosenProduct }) => {
   const pathname = usePathname();
@@ -22,7 +22,7 @@ const SearchBox = ({ setChosenProduct }) => {
 
   useEffect(() => {
     getProducts().then((data) => {
-      console.log(data, "<-- data within useEffect");
+      // console.log(data, "<-- data within useEffect");
       setProductList(data);
       return data;
     });
@@ -39,6 +39,7 @@ const SearchBox = ({ setChosenProduct }) => {
   );
 
   // console.log(filteredResults, "<--this is filteredResults");
+  const searchData = searchTerm.length ? filteredResults : [];
 
   return (
     <>
@@ -50,27 +51,15 @@ const SearchBox = ({ setChosenProduct }) => {
           placeholderTextColor="#CDCDE0"
           onChangeText={(e) => setSearchTerm(e)}
         />
-        {/* <TouchableOpacity
-          onPress={()=>{
-            if(!searchTerm){
-              return Alert.alert("Missing search query", "Please Term something to search for items")
-            }
-            else(setSearchTerm(searchTerm))
-          }}
-          >
-            <Image 
-                source={icons.search}
-                className="w-5 h-5"
-                resizeMode="contain"/>
-        </TouchableOpacity> */}
       </View>
-      <FlatList
-        data={searchTerm.length ? filteredResults : []}
-        keyExtractor={(item) => item.product_id}
-        renderItem={({ item }) => (
-          <ProductCard product={item} setChosenProduct={setChosenProduct} setSearchTerm={setSearchTerm}/>
-        )}
-      />
+      {searchData.map((item) => (
+        <ProductCard
+          key={item.product_id}
+          product={item}
+          setChosenProduct={setChosenProduct}
+          setSearchTerm={setSearchTerm}
+        />
+      ))}
     </>
   );
 };
