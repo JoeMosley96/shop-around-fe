@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton"
-import {Link} from "expo-router"
+import {Link, router} from "expo-router"
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -14,7 +14,10 @@ const SignUp = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const submit = () =>{}
+  const submit = () =>{
+    return router.replace("/home")
+  }
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
@@ -26,7 +29,7 @@ const SignUp = () => {
           <FormField
             title="Username"
             value={form.username}
-            handleChangeText={(e) => setForm({ ...form, email: e })}
+            handleChangeText={(e) => setForm({ ...form, username: e })}
             otherStyles="mt-10"
           />
 

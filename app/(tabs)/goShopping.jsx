@@ -6,7 +6,9 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  StyleSheet
 } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 // import {ScrollView} from "react-native-virtualized-view"
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,6 +18,7 @@ import EmptyState from "../../components/EmptyState";
 import MapComponentCircle from "../../components/MapComponentCircle";
 import MapComponentResults from "../../components/MapComponentResults";
 import ProductDisplay from "../../components/ProductDisplay";
+import ProductDisplayResults from "../../components/ProductDisplayResults"
 import CustomButton from "../../components/CustomButton";
 import {
   getProducts,
@@ -26,6 +29,7 @@ import {
 import { Link, router } from "expo-router";
 import Slider from "@react-native-community/slider";
 import { icons } from "../../constants";
+import * as Location from "expo-location";
 
 const GoShopping = () => {
   const [chosenProduct, setChosenProduct] = useState({});
@@ -37,6 +41,7 @@ const GoShopping = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [sliderValue, setSliderValue] = useState(500);
   const [location, setLocation] = useState({ lat: "", lng: "" });
+  const [usingGPS, setUsingGPS] = useState(false)
 
   console.log(chosenProduct, "<--this is chosenProduct");
   console.log(priceInput, "<--this is priceInput");
@@ -65,6 +70,46 @@ const GoShopping = () => {
     setIsSubmitted(false);
   };
 
+  const handleGPSPress = async() =>{
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let gpsLocation = await Location.getCurrentPositionAsync({});
+
+      setLocation({
+        lat:gpsLocation.coords.latitude,
+        lng:gpsLocation.coords.longitude,
+      });
+      setUsingGPS(true)
+      setPostcodeInput("")
+
+      // console.log("device GPS location--->", gpsLocation);
+    };
+
+  const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    fontSize: 16,
+  },
+});
+
+  console.log(location, "<--location")
+
   if (!isSubmitted) {
     return (
       <SafeAreaView className="bg-primary">
@@ -72,7 +117,6 @@ const GoShopping = () => {
           <Text className="text-2xl font-psemibold text-white p-4">
             Find the cheapest price for an item:
           </Text>
-
           {chosenProduct.product_id ? null : (
             <>
               <Text className="text-l font-psemibold text-white mt-4 mb-2 pl-4">
@@ -93,6 +137,7 @@ const GoShopping = () => {
               />
             </>
           ) : null}
+          
           <Text className="text-l font-psemibold text-white mt-4 mb-2 pl-4">
             Choose search region:
           </Text>
@@ -109,9 +154,27 @@ const GoShopping = () => {
                 setPostcodeInput(e)
                 if (regex.test(e)) {
                   setPostcode(e);
+                  setUsingGPS(false)
                 }
               }}
             />
+            <TouchableOpacity className="flex-col items-center">
+          
+                <Text className="text-white font-pregular">Use GPS  </Text>
+            <Icon
+                name="map-marker"
+                size={30}
+                color="#900"
+              style={styles.icon}
+              className="align-center"
+              // onPress={()=>{console.log('marker pressed');}}
+              onPress={handleGPSPress}
+            />
+         
+
+            </TouchableOpacity>
+          {/* <CustomButton title="Use GPS" handlePress={handleGPSPress}/> */}
+
           </View>
           <Text className="text-s font-pregular text-white pl-4">
             Radius: {sliderValue} metres
@@ -128,7 +191,7 @@ const GoShopping = () => {
             maximumTrackTintColor="#000000"
           />
 
-          {postcode.length && chosenProduct.product_id ? (
+          {(postcode.length||usingGPS) && chosenProduct.product_id ? (
             <TouchableOpacity
               activeOpacity={0.7}
               className="bg-secondary rounded-xl min-h-[62px] justify-center items-center m-2"
@@ -156,6 +219,7 @@ const GoShopping = () => {
     return (
       <SafeAreaView className="bg-primary h-full">
         <ScrollView>
+        <ProductDisplayResults chosenProduct={chosenProduct}/>
           <View className="w-full justify-center px-4 my-6">
             <Text className="text-2xl text-white text-semibold font-psemibold">
               Reported prices below:
@@ -165,6 +229,7 @@ const GoShopping = () => {
               <Image
                 // styles={{ width: 15, height: 15 }}
                 source={icons.greenmarkerresized}
+                
               />{" "}
               indicates cheapest price
             </Text>

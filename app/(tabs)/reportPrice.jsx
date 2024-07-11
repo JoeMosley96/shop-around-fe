@@ -18,12 +18,14 @@ import ProductDisplay from "../../components/ProductDisplay";
 import CustomButton from "../../components/CustomButton";
 import { getProducts, postPrice, getStoresById } from "../../api";
 import { Link, router } from "expo-router";
+import * as Location from "expo-location";
 
 const ReportPrice = () => {
   const [chosenProduct, setChosenProduct] = useState({});
   const [chosenStore, setChosenStore] = useState("");
   const [chosenStoreName, setChosenStoreName] = useState("");
   const [postcode, setPostcode] = useState("");
+  const [postcodeInput, setPostcodeInput] = useState("")
   const [priceInput, setPriceInput] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
   console.log(chosenProduct, "<--this is chosenProduct");
@@ -35,7 +37,6 @@ const ReportPrice = () => {
   console.log(
     chosenStore !== 0 && postcode.length && priceInput !== 0,
     "<--ternery logic"
-
   );
 
   const regex =
@@ -58,12 +59,35 @@ const ReportPrice = () => {
     setPriceInput(0);
   };
 
+  // const handleGPSPress = async() =>{
+  //   let { status } = await Location.requestForegroundPermissionsAsync();
+  //   if (status !== "granted") {
+  //     setErrorMsg("Permission to access location was denied");
+  //     return;
+  //   }
+
+  //   let gpsLocation = await Location.getCurrentPositionAsync({});
+
+  //   setLocation({
+  //     lat:gpsLocation.coords.latitude,
+  //     lng:gpsLocation.coords.longitude,
+  //   });
+  //   setUsingGPS(true)
+  //   setPostcodeInput("")
+
+  //   // console.log("device GPS location--->", gpsLocation);
+  // };
+
   if (!isSubmitted) {
     return (
       <SafeAreaView className="bg-primary">
         <ScrollView>
           <Text className="text-2xl font-psemibold text-white p-4">
             Report the price of an item
+          </Text>
+
+          <Text className="text-l font-psemibold text-white p-4">
+            Search for items
           </Text>
 
           {chosenProduct.product_id ? null : (
@@ -79,57 +103,63 @@ const ReportPrice = () => {
                 chosenProduct={chosenProduct}
                 setChosenProduct={setChosenProduct}
               />
-              <View className="border-2 border-black-200 w-full h-16 px-4 bg-black-100 rounded-2xl focus:border-secondary items-center flex-row space-x-4 mb-4">
-                <TextInput
-                  className="text-white mt-0.5  text-white flex-1 font-pregular"
-                  value={priceInput}
-                  placeholder="Enter price here in £"
-                  placeholderTextColor="#CDCDE0"
-                  keyboardType="numeric"
-                  onChangeText={(e) => setPriceInput(Number(e))}
-                />
-              </View>
-              <Text className="text-l font-psemibold text-white p-4">
-                Where did you buy it?
-              </Text>
-              <View className="border-2 border-black-200 w-full h-16 px-4 bg-black-100 rounded-2xl focus:border-secondary items-center flex-row space-x-4 mb-4">
-                <TextInput
-                  className="text-white mt-0.5 text-white flex-1 font-pregular"
-                  value={priceInput}
-                  placeholder="Enter postcode here"
-                  placeholderTextColor="#CDCDE0"
-                  onChangeText={(e) => {
-                    if (regex.test(e)) {
-                      setPostcode(e);
-                    }
-                  }}
-                />
-              </View>
-
-              <View className="flex-column p-2">
-                {chosenStoreName ? (
-                  <>
-                    <Text className="text-l font-psemibold text-white p-4">
-                      Bought at {chosenStoreName}
-                    </Text>
-                    <TouchableOpacity
-                      activeOpacity={0.7}
-                      className="bg-secondary rounded-xl min-h-[62px] justify-center items-center"
-                      onPress={submit}
-                    >
-                      <Text className={`text-primary font-psemibold text-lg`}>
-                        Report this price
-                      </Text>
-                    </TouchableOpacity>
-                  </>
-                ) : (
-                  <Text className="text-l font-psemibold text-white p-4">
-                    Select shop below:
-                  </Text>
-                )}
-              </View>
             </>
           ) : null}
+
+          <Text className="text-l font-psemibold text-white p-4">
+            How much did you pay?
+          </Text>
+
+          <View className="border-2 border-black-200 w-full h-16 px-4 bg-black-100 rounded-2xl focus:border-secondary items-center flex-row space-x-4 mb-4">
+            <TextInput
+              className="text-white mt-0.5  text-white flex-1 font-pregular"
+              value={priceInput}
+              placeholder="Enter price here in £"
+              placeholderTextColor="#CDCDE0"
+              keyboardType="numeric"
+              onChangeText={(e) => setPriceInput(Number(e))}
+            />
+          </View>
+          <Text className="text-l font-psemibold text-white p-4">
+            Where did you buy it?
+          </Text>
+          <View className="border-2 border-black-200 w-full h-16 px-4 bg-black-100 rounded-2xl focus:border-secondary items-center flex-row space-x-4 mb-4">
+            <TextInput
+              className="text-white mt-0.5 text-white flex-1 font-pregular"
+              value={postcodeInput}
+              placeholder="Enter postcode here"
+              placeholderTextColor="#CDCDE0"
+              onChangeText={(e) => {
+                setPostcodeInput(e)
+                if (regex.test(e)) {
+                  setPostcode(e);
+                }
+              }}
+            />
+          </View>
+
+          <View className="flex-column p-2">
+            {chosenStoreName && chosenProduct.product_id && priceInput !== 0 ? (
+              <>
+                <Text className="text-l font-psemibold text-white p-4">
+                  Bought at {chosenStoreName}
+                </Text>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  className="bg-secondary rounded-xl min-h-[62px] justify-center items-center"
+                  onPress={submit}
+                >
+                  <Text className={`text-primary font-psemibold text-lg`}>
+                    Report this price
+                  </Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <Text className="text-l font-psemibold text-white pb-2 px-2">
+                Select shop below:
+              </Text>
+            )}
+          </View>
 
           <MapComponent
             postcode={postcode}
@@ -137,7 +167,6 @@ const ReportPrice = () => {
             setChosenStoreName={setChosenStoreName}
             chosenStore={chosenStore}
           />
-
         </ScrollView>
       </SafeAreaView>
     );

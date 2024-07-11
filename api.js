@@ -168,6 +168,38 @@ export const getFavouritesByUserId =(user_id)=>{
   });
 }
 
+export const deleteFavourite=(fav_product_id)=>{
+  return shopAround.delete(`favourites/${fav_product_id}/`)
+  .catch((error) => {
+    console.error("An error occurred:", error);
+    console.error(
+      "Error details:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  });
+}
+
+export const addToFavourites=(product_id, user_id)=>{
+  const body = {
+    product:product_id,
+    user: user_id
+  }
+  return shopAround.post(`favourites/`, body)
+  .then(({data})=>{
+    return data
+  })
+  .catch((error) => {
+    console.error("An error occurred:", error);
+    console.error(
+      "Error details:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  });
+
+}
+
 
 // export const getTopics = () => {
 //   return shopAround.get("/topics").then(({ data }) => {

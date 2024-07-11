@@ -27,14 +27,40 @@ const MapComponentCircle = ({
     const regex =
       /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/;
     if (regex.test(postcode)) {
-      getCoordinatesFromPostCode(postcode).then((response) => {
+      getCoordinatesFromPostCode(postcode)
+      .then((response) => {
         const location = response.data.results[0].geometry.location;
         setLocation(location);
         console.log("Data from google at location    --->", location);
         return location;
-      });
+      })
+
     }
   }, [postcode]);
+
+  useEffect(()=>{
+        mapRef.current.fitToCoordinates([
+        {
+          latitude:location.lat,
+          longitude: location.lng
+        },
+        {
+          latitude:location.lat+0.02690000027,
+          longitude: location.lng
+        },
+        {
+          latitude:location.lat-0.02690000027,
+          longitude: location.lng
+        }
+      
+      ],
+          {
+            edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+            animated: true,
+          })
+      }
+
+,[location])
 
 
 

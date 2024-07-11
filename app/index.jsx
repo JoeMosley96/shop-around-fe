@@ -15,7 +15,6 @@ export default function App() {
             className="w-[250px] h-[84px]"
             resizeMode="contain"
           />
-
           <Image
             source={images.shopLogo}
             className="max-w[380px] w-full h-[300px]"
