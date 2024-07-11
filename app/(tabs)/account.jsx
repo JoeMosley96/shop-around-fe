@@ -2,7 +2,7 @@ import {StyleSheet, Text,ScrollView, View, TextInput, Button} from "react-native
 import React, { useEffect, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, router } from "expo-router";
-import { getUsers } from "../../api";
+import { getUsers, updateUser } from "../../api";
 
 
 
@@ -26,12 +26,9 @@ const Account = () => {
     }, []);
   
   const handleChange = async (field, value) => {
-      
-    const updatedUserFields = { ...user, [field]: value };
-
-    console.log(updatedUserFields);
+    console.log(field, value)
     
-    updateUser(updatedUserFields,user_id).then((response) => {
+    updateUser(user, user_id).then((response) => {
       console.log("updated user response---->", response);
     });
   }
@@ -39,20 +36,13 @@ const Account = () => {
   const handleButtonPress = (field) => {
     if (editing === field) {
       handleChange(field, tempValue);
+      setEditing(null);
     } else {
       setTempValue(user[field]);
       setEditing(field);
     }
   };
       
-        // await axios.put(
-        //   `http://your-backend-api-url/users/${user.id}`,
-        //   updatedUser
-        // );
-        // setUser(updatedUser);
-        // setEditing(null);
-      
-  
   
     return (
       <SafeAreaView className="bg-primary h-full">

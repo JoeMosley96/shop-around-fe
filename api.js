@@ -86,7 +86,7 @@ export const getCoordinatesFromPostCode = async (postcode) => {
 
 
 export const getUsers = (user_id) => {
-  console.log('GETUSERS is being invoked ');
+  console.log('GETUSERS is being invoked');
   return shopAround
     .get(`users/${user_id}`)
     .then(({ data }) => {
@@ -103,10 +103,12 @@ export const getUsers = (user_id) => {
 };
 
 
-export const updateUser = async(updatedUserFields,user_id) => {
-  console.log("Updated User is being invoked ", updatedUserFields);
-  return await shopAround
-    .patch(`users/${user_id}/`, updatedUserFields)
+export const updateUser = (updatedUserFields,user_id) => {
+  const {email, username} = updatedUserFields;
+  body = {email, username}
+  console.log("Updated User is being invoked", body, user_id);
+  return shopAround
+    .patch(`users/${user_id}/`, body)
     .then((data) => {
       return data;
     })
