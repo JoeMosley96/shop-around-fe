@@ -1,19 +1,33 @@
 import { View, Text, FlatList, Image } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "../../constants/images";
 import SearchBox from "../../components/SearchBox";
 import EmptyState from "../../components/EmptyState";
+import { useFocusEffect } from "@react-navigation/native";
+import {getFavouritesByUserId} from "../../api"
+import FavouriteProductDisplay from "../../components/ProductDisplay"
 
 const Home = () => {
+  const [favouritesList, setFavouritesList] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(()=>{
+      getFavouritesByUserId(1)
+      .then((favourites)=>{
+        setFavouritesList(favourites)
+      })
+    },[])
+  );
+
   return (
     <SafeAreaView className="bg-primary flex-1">
       <FlatList
         // data={[{ id: 1 }, { id: 2 }, { id: 3 }]}
-        data={[]}
+        data={favouritesList}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          <Text className="text-3xl text-white">{item.id}</Text>
+          <FavouriteProductDisplay chosenProduct={item} setFavouritesList={setFavouritesList}/>
         )}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">

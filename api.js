@@ -151,6 +151,21 @@ export const getLocalPrices =(product_id, lat, lng, rad)=>{
   });
 }
 
+export const getFavouritesByUserId =(user_id)=>{
+  return shopAround.get(`users/${user_id}/favourites`)
+  .then(({data})=>{
+    return data
+  })
+  .catch((error) => {
+    console.error("An error occurred:", error);
+    console.error(
+      "Error details:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  });
+}
+
 
 // export const getTopics = () => {
 //   return shopAround.get("/topics").then(({ data }) => {
