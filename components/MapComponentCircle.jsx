@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { View, StyleSheet} from "react-native";
 import MapView, {
   Marker,
   PROVIDER_GOOGLE,
-  Callout,
   Circle,
 } from "react-native-maps";
-import { getCoordinatesFromPostCode, getStores } from "../api";
-import CustomButton from "../components/CustomButton";
+import { getCoordinatesFromPostCode} from "../api";
 
 const MapComponentCircle = ({
   postcode,
@@ -19,9 +17,6 @@ const MapComponentCircle = ({
   setLocation
 }) => {
   let mapRef = useRef(null);
-  const [storesList, setStoresList] = useState([]);
-  const [error, setError] = useState(null);
-  const [displayedMarker, setDisplayedMarker] = useState(null);
 
   useEffect(() => {
     const regex =
@@ -31,7 +26,6 @@ const MapComponentCircle = ({
       .then((response) => {
         const location = response.data.results[0].geometry.location;
         setLocation(location);
-        console.log("Data from google at location    --->", location);
         return location;
       })
 
@@ -61,16 +55,6 @@ const MapComponentCircle = ({
       }
 
 ,[location])
-
-
-
-  console.log(chosenStore, "<--chosenStore");
-  console.log(displayedMarker, "<--displayedMarker");
-  console.log(typeof location.lat, "<--this is the type of location.lat")
-
-
-
-
   return (
     <View style={styles.container}>
       <MapView
@@ -83,7 +67,6 @@ const MapComponentCircle = ({
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         }}
-        // animateToRegion={{ latitude: location.lat, longitude: location.lng }}
       >
         {typeof location.lat === "number" ? (
           <>

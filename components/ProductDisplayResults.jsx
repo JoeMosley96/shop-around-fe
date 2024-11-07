@@ -27,7 +27,6 @@ function FavouriteProductDisplay({ chosenProduct }) {
   );
 
   function handlePress(chosenProduct) {
-    console.log(chosenProduct);
     if (isFavourite) {
       deleteFavourite(favProductId).then(() => {
         setIsFavourite(false);

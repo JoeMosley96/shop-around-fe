@@ -1,19 +1,11 @@
 import {
   View,
-  Text,
   TextInput,
-  Image,
-  TouchableOpacity,
-  Alert,
-  FlatList,
-  ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { router, usePathname } from "expo-router";
-import { icons } from "../constants";
+import { usePathname } from "expo-router";
 import { getProducts } from "../api";
 import ProductCard from "../components/ProductCard";
-import ProductDisplay from "./ProductDisplay";
 
 const SearchBox = ({ setChosenProduct }) => {
   const pathname = usePathname();
@@ -22,13 +14,10 @@ const SearchBox = ({ setChosenProduct }) => {
 
   useEffect(() => {
     getProducts().then((data) => {
-      // console.log(data, "<-- data within useEffect");
       setProductList(data);
       return data;
     });
   }, []);
-
-  // console.log(productList, "<--this is productList");
 
   const filteredResults = productList.filter(
     (product) =>
@@ -37,8 +26,6 @@ const SearchBox = ({ setChosenProduct }) => {
       product.product.toUpperCase().includes(searchTerm.toUpperCase()) ||
       product.size.toUpperCase().includes(searchTerm.toUpperCase())
   );
-
-  // console.log(filteredResults, "<--this is filteredResults");
 
   const searchData = searchTerm.length ? filteredResults : [];
 

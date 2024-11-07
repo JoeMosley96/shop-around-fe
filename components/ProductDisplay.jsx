@@ -1,8 +1,5 @@
-import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
-// import {Card, ListItem, Button, Icon} from react-native-elements
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { icons } from "../constants";
-import { router } from "expo-router";
 
 function ProductDisplay({ chosenProduct, setChosenProduct }) {
   return (

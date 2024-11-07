@@ -1,8 +1,7 @@
-import { View, Text, TextInput, Image, TouchableOpacity, Alert } from "react-native";
+import { View, TextInput, Image, TouchableOpacity, Alert } from "react-native";
 import React, { useState } from "react";
 import {router, usePathname} from "expo-router"
 import { icons } from "../constants";
-import { enableFreeze } from "react-native-screens";
 
 const SearchInput = ({initialQuery}) => {
   const pathname= usePathname()

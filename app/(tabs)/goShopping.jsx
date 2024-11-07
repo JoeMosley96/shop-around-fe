@@ -43,17 +43,6 @@ const GoShopping = () => {
   const [location, setLocation] = useState({ lat: "", lng: "" });
   const [usingGPS, setUsingGPS] = useState(false)
 
-  console.log(chosenProduct, "<--this is chosenProduct");
-  console.log(priceInput, "<--this is priceInput");
-  console.log(postcode, "<-- this is postcode");
-  console.log(chosenStore, "<--this is chosenStore");
-  console.log(chosenStoreName, "<-- this is chosenStoreName");
-
-  console.log(
-    chosenStore !== 0 && postcode.length && priceInput !== 0,
-    "<--ternery logic"
-  );
-
   const regex =
     /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/;
 
@@ -62,7 +51,6 @@ const GoShopping = () => {
   };
 
   const handleDrag = (event) => {
-    console.log(event);
     setSliderValue(event);
   };
 
@@ -85,8 +73,6 @@ const GoShopping = () => {
       });
       setUsingGPS(true)
       setPostcodeInput("")
-
-      // console.log("device GPS location--->", gpsLocation);
     };
 
   const styles = StyleSheet.create({
@@ -107,8 +93,6 @@ const GoShopping = () => {
     fontSize: 16,
   },
 });
-
-  console.log(location, "<--location")
 
   if (!isSubmitted) {
     return (
@@ -167,7 +151,6 @@ const GoShopping = () => {
                 color="#900"
               style={styles.icon}
               className="align-center"
-              // onPress={()=>{console.log('marker pressed');}}
               onPress={handleGPSPress}
             />
          

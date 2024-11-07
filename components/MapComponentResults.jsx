@@ -14,7 +14,6 @@ const MapComponent = ({location, chosenProduct, sliderValue}) => {
 
 
   useEffect(() => {
-    console.log(typeof location.lat === "number");
     if (typeof location.lat === "number") {
       getLocalPrices(
         chosenProduct.product_id,
@@ -22,7 +21,6 @@ const MapComponent = ({location, chosenProduct, sliderValue}) => {
         location.lng,
         sliderValue)
         .then((prices) => {
-          console.log(prices, "<--prices from API");
           setError(null);
           setPricesList(prices);
           return prices;
@@ -69,11 +67,6 @@ const MapComponent = ({location, chosenProduct, sliderValue}) => {
     }
   }, [location]);
 
-
-  console.log(displayedMarker, "<--displayedMarker");
-  console.log(location)
-  console.log(markersList, "<--markersList")
-
   return (
     <View style={styles.container}>
       <MapView
@@ -91,13 +84,11 @@ const MapComponent = ({location, chosenProduct, sliderValue}) => {
           <Marker
             key={marker.store_id}
             coordinate={{ latitude: marker.lat, longitude: marker.lng }}
-            // title={marker.locationName}
             onPress={() => {
               setDisplayedMarker(marker.store_id);
             }}
             image={index===0?icons.greenmarker:undefined}
           >
-            {/* {marker.store_id == displayedMarker ?  */}
               <Callout
                 value={marker.store_id}
                 onPress={() => {
@@ -117,7 +108,6 @@ const MapComponent = ({location, chosenProduct, sliderValue}) => {
                   <Text>{marker.sunday} </Text>
                 </View>
               </Callout>
-              {/* : null}  */}
           </Marker>
         ))}
       </MapView>

@@ -2,18 +2,15 @@ import axios from "axios";
 
 const shopAround = axios.create({
   baseURL: "https://shop-around-be.onrender.com/api/",
-  // withCredentials: true,  // Include credentials if needed
 });
 
 
 
 export const getStores = (lat,lng,rad) => {
-  console.log('getStores is being invoked');
   const params = {params: {rad}}
   return shopAround.get(`stores/${lat}/${lng}`, params)
-
     .then(( {data} ) => {
-      console.log(data)
+     
       return data;
     })
     .catch((error) => {
@@ -27,10 +24,8 @@ export const getStores = (lat,lng,rad) => {
 };
 
 export const getStoresById = (id) => {
-  console.log('getStoresById is being invoked');
   return shopAround.get(`stores/${id}`)
     .then(( {data} ) => {
-      console.log(data)
       return data;
     })
     .catch((error) => {
@@ -44,13 +39,9 @@ export const getStoresById = (id) => {
 };
 
 export const getProducts = () => {
-  // console.log('getProducts is being invoked now');
-
-
   return shopAround.get(`products`)
 
     .then(( {data} ) => {
-      // console.log(data, 'here is all the data');
       return data;
     })
     .catch((error) => {
@@ -64,9 +55,7 @@ export const getProducts = () => {
 };
 
 export const getCoordinatesFromPostCode = async (postcode) => {
-  const API_KEY = "AIzaSyDug2H25Ibza9XgkDvk3zLtEWwbxK0LCxA";
-  console.log('postcode ',postcode);
-
+  const API_KEY = process.env.EXPO_PUBLIC_MAPS_API_KEY;
   return (response = await axios
     .get(`https://maps.googleapis.com/maps/api/geocode/json`, {
       params: {
@@ -86,7 +75,6 @@ export const getCoordinatesFromPostCode = async (postcode) => {
 
 
 export const getUsers = (user_id) => {
-  console.log('GETUSERS is being invoked');
   return shopAround
     .get(`users/${user_id}`)
     .then(({ data }) => {
@@ -106,7 +94,6 @@ export const getUsers = (user_id) => {
 export const updateUser = (updatedUserFields,user_id) => {
   const {email, username} = updatedUserFields;
   body = {email, username}
-  console.log("Updated User is being invoked", body, user_id);
   return shopAround
     .patch(`users/${user_id}/`, body)
     .then((data) => {

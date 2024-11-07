@@ -1,8 +1,6 @@
 import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
-// import {Card, ListItem, Button, Icon} from react-native-elements
 import React from "react";
-import { icons } from "../constants";
-import { router } from "expo-router";
+
 
 function ProductCard({
   product,

@@ -1,8 +1,5 @@
-import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
-// import {Card, ListItem, Button, Icon} from react-native-elements
+import { View, Text,  Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { icons } from "../constants";
-import { router } from "expo-router";
 import {deleteFavourite} from "../api"
 
 
@@ -11,7 +8,6 @@ import {deleteFavourite} from "../api"
 function FavouriteProductDisplay({ chosenProduct, setFavouritesList }) {
 
   function handlePress(chosenProduct){
-    console.log(chosenProduct)
     deleteFavourite(chosenProduct.fav_product_id)
     .then(()=>{
       setFavouritesList((currentFavouritesList)=>{

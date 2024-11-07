@@ -32,10 +32,8 @@ const Account = () => {
   }, []);
 
   const handleChange = async (field, value) => {
-    console.log(field, value);
 
     updateUser(user, user_id).then((response) => {
-      console.log("updated user response---->", response);
     });
   };
 

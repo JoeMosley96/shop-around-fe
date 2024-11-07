@@ -1,24 +1,16 @@
 import {
   View,
   Text,
-  FlatList,
-  Image,
   ScrollView,
   TextInput,
   TouchableOpacity,
 } from "react-native";
-// import {ScrollView} from "react-native-virtualized-view"
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import images from "../../constants/images";
 import SearchBox from "../../components/SearchBox";
-import EmptyState from "../../components/EmptyState";
 import MapComponent from "../../components/MapComponent";
 import ProductDisplay from "../../components/ProductDisplay";
-import CustomButton from "../../components/CustomButton";
-import { getProducts, postPrice, getStoresById } from "../../api";
-import { Link, router } from "expo-router";
-import * as Location from "expo-location";
+import {postPrice} from "../../api";
 
 const ReportPrice = () => {
   const [chosenProduct, setChosenProduct] = useState({});
@@ -28,16 +20,7 @@ const ReportPrice = () => {
   const [postcodeInput, setPostcodeInput] = useState("")
   const [priceInput, setPriceInput] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  console.log(chosenProduct, "<--this is chosenProduct");
-  console.log(priceInput, "<--this is priceInput");
-  console.log(postcode, "<-- this is postcode");
-  console.log(chosenStore, "<--this is chosenStore");
-  console.log(chosenStoreName, "<-- this is chosenStoreName");
 
-  console.log(
-    chosenStore !== 0 && postcode.length && priceInput !== 0,
-    "<--ternery logic"
-  );
 
   const regex =
     /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/;
@@ -49,7 +32,6 @@ const ReportPrice = () => {
       store: chosenStore,
       product: chosenProduct.product_id,
     }).then((data) => {
-      console.log(data, "<--postedPrice");
     });
   };
 
@@ -58,25 +40,6 @@ const ReportPrice = () => {
     setChosenProduct({});
     setPriceInput(0);
   };
-
-  // const handleGPSPress = async() =>{
-  //   let { status } = await Location.requestForegroundPermissionsAsync();
-  //   if (status !== "granted") {
-  //     setErrorMsg("Permission to access location was denied");
-  //     return;
-  //   }
-
-  //   let gpsLocation = await Location.getCurrentPositionAsync({});
-
-  //   setLocation({
-  //     lat:gpsLocation.coords.latitude,
-  //     lng:gpsLocation.coords.longitude,
-  //   });
-  //   setUsingGPS(true)
-  //   setPostcodeInput("")
-
-  //   // console.log("device GPS location--->", gpsLocation);
-  // };
 
   if (!isSubmitted) {
     return (
