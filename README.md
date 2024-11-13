@@ -2,12 +2,14 @@
 
 ShopAround is a mobile application designed to compare prices of products in local shops, helping users find the cheapest options in their area. The app provides functionalities to search for products, find nearby stores, manage favourite items, and browse products by category.
 
+Back end repo available here https://github.com/JoeMosley96/shop-around-be
+
 Features
 
-- Get Price Report: Find the cheapest price for a desired product within a specified radius from your current location.
+- Go Shopping: Find the cheapest price for a desired product within a specified radius from your current location.
 - Get Local Stores: View all stores within a given radius from your current location.
+- Report Price: Report the price paid for a product and where it was bought.
 - Get Favourites: Manage and view a list of favourite products.
-- Products by Category: Browse products sorted into categories
 
 Tech Stack
 - Backend: Python, Django, Django REST Framework, PostgreSQL with PostGIS extension
